@@ -22,18 +22,16 @@
 
 # ----------------------------------------------------------
 # Author: Stephen Leger (s-leger)
-# 
+#
 # ----------------------------------------------------------
 import bpy
 import subprocess
 import sys
 
-
 PYPATH = sys.executable
 
 
 class Pip:
-
     def __init__(self):
         self._ensurepip()
 
@@ -42,13 +40,17 @@ class Pip:
         import os
         import site
         import sys
+
         site_package = site.getusersitepackages()
         if not os.path.exists(site_package):
-            site_package = bpy.utils.user_resource('SCRIPTS', "site_package", create=True)
+            site_package = bpy.utils.user_resource(
+                "SCRIPTS", "site_package", create=True
+            )
             site.addsitedir(site_package)
         if site_package not in sys.path:
             sys.path.append(site_package)
-    '''
+
+    """
     @staticmethod
     def _ensure_user_site_package():
         import os
@@ -61,7 +63,8 @@ class Pip:
         else:
             site_package = bpy.utils.user_resource('SCRIPTS', "site_package", create=True)
             site.addsitedir(site_package)
-    '''
+    """
+
     def _cmd(self, action, options, module):
         if options is not None and "--user" in options:
             self._ensure_user_site_package()
@@ -150,5 +153,6 @@ class Pip:
         :return: python version object
         """
         import sys
+
         # version.major, version.minor, version.micro
         return sys.version_info
