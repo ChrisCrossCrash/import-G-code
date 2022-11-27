@@ -125,6 +125,8 @@ class ImportGcode(bpy.types.Operator, ImportHelper):
                             layer.data.splines[index].bezier_points[
                                 -1
                             ].select_control_point = True
+                            # FIXME: Throws the error:
+                            #  IndexError: bpy_prop_collection[-2]: out of range.
                             layer.data.splines[index].bezier_points[
                                 -2
                             ].select_control_point = True
