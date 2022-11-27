@@ -58,7 +58,7 @@ class ImportGcode(bpy.types.Operator, ImportHelper):
 
             for i, line in enumerate(lines):
                 matches = pattern.finditer(line)
-                for match in matches:
+                for _ in matches:
                     if line[0] == ";":
                         layered_gcodes.append([])
                     else:
@@ -83,12 +83,14 @@ class ImportGcode(bpy.types.Operator, ImportHelper):
                     if g == 0:
                         if j + 1 < len(layer):
                             if sub_pattern.search(layer[j + 1]).group("G") != "0":
-                                vertices[i].append((g, round(x, 3), round(y, 3), z))
+                                vertices[i].append(
+                                    list((g, round(x, 3), round(y, 3), z))
+                                )
                         else:
-                            vertices[i].append((g, round(x, 3), round(y, 3), z))
+                            vertices[i].append(list((g, round(x, 3), round(y, 3), z)))
 
                     else:
-                        vertices[i].append((g, round(x, 3), round(y, 3), z))
+                        vertices[i].append(list((g, round(x, 3), round(y, 3), z)))
 
             vertices.append([])
 
