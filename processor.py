@@ -112,14 +112,19 @@ class ImportGcode(bpy.types.Operator, ImportHelper):
                         ops.curve.vertex_add(location=v[1:])
                         if v[0] == 0:
                             ops.curve.select_all(action="DESELECT")
-                            layer.data.splines[index].bezier_points[-1].select_control_point = True
-                            # FIXME: Throws the error:
-                            #  IndexError: bpy_prop_collection[-2]: out of range.
-                            layer.data.splines[index].bezier_points[-2].select_control_point = True
-                            ops.curve.delete(type="SEGMENT")
-                            ops.curve.select_all(action="DESELECT")
-                            layer.data.splines[-1].bezier_points[-1].select_control_point = True
-                            index += 1
+                            try:
+                                layer.data.splines[index].bezier_points[-1].select_control_point = True
+                                # FIXME: Throws the error:
+                                #  IndexError: bpy_prop_collection[-2]: out of range.
+                                layer.data.splines[index].bezier_points[-2].select_control_point = True
+                            except IndexError:
+                                pass
+                            else:
+                                ops.curve.delete(type="SEGMENT")
+                                ops.curve.select_all(action="DESELECT")
+                                layer.data.splines[-1].bezier_points[-1].select_control_point = True
+                            finally:
+                                index += 1
 
                     ops.object.editmode_toggle()
                     context.object.data.twist_mode = "Z_UP"
