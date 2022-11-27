@@ -24,30 +24,33 @@
 #################################################
 
 bl_info = {
-    "name" : "Import-G-code",
-    "author" : "Senthur Raj",
-    "description" : "Imports G-code files into Blender 2.80+ as a collection of layers.",
-    "blender" : (2, 80, 0),
-    "version" : (1, 1, 0),
-    "location" : "File > Import-Export",
-    "warning" : "",
-    "wiki_url" : "https://github.com/blender-for-science/import-G-code",
-    "tracker_url" : "https://github.com/blender-for-science/import-G-code/issues",
-    "category" : "Import-Export"
+    "name": "Import-G-code",
+    "author": "Senthur Raj",
+    "description": "Imports G-code files into Blender 2.80+ as a collection of layers.",
+    "blender": (2, 80, 0),
+    "version": (1, 1, 0),
+    "location": "File > Import-Export",
+    "warning": "",
+    "wiki_url": "https://github.com/blender-for-science/import-G-code",
+    "tracker_url": "https://github.com/blender-for-science/import-G-code/issues",
+    "category": "Import-Export",
 }
 
 import bpy
 from .preferences import IGcodePreferences, IGcodeInstaller
 from .processor import ImportGcode
 
+
 def menu_func_import(self, context):
     self.layout.operator(ImportGcode.bl_idname, text="G-code (.gcode)")
+
 
 def register():
     bpy.utils.register_class(IGcodePreferences)
     bpy.utils.register_class(IGcodeInstaller)
     bpy.utils.register_class(ImportGcode)
     bpy.types.TOPBAR_MT_file_import.append(menu_func_import)
+
 
 def unregister():
     bpy.utils.unregister_class(IGcodePreferences)

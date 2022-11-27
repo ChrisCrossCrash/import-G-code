@@ -49,9 +49,7 @@ class ImportGcode(bpy.types.Operator, ImportHelper):
         vertices = [[]]
 
         pattern = re.compile(r";LAYER:|G[0|1]")
-        sub_pattern = re.compile(
-            r"G(?P<G>[0|1])\s?[a-zA-Z0-9.]*\sX(?P<X>[0-9.]*)\sY(?P<Y>[0-9.]*)"
-        )
+        sub_pattern = re.compile(r"G(?P<G>[0|1])\s?[a-zA-Z0-9.]*\sX(?P<X>[0-9.]*)\sY(?P<Y>[0-9.]*)")
 
         with open(self.filepath, "r") as f:
             lines = f.readlines()
@@ -83,9 +81,7 @@ class ImportGcode(bpy.types.Operator, ImportHelper):
                     if g == 0:
                         if j + 1 < len(layer):
                             if sub_pattern.search(layer[j + 1]).group("G") != "0":
-                                vertices[i].append(
-                                    list((g, round(x, 3), round(y, 3), z))
-                                )
+                                vertices[i].append(list((g, round(x, 3), round(y, 3), z)))
                         else:
                             vertices[i].append(list((g, round(x, 3), round(y, 3), z)))
 
@@ -100,9 +96,7 @@ class ImportGcode(bpy.types.Operator, ImportHelper):
 
                 if len(_layer) > 0:
                     index = 0
-                    ops.curve.primitive_bezier_curve_add(
-                        location=_layer[0][1:], radius=0, enter_editmode=True
-                    )
+                    ops.curve.primitive_bezier_curve_add(location=_layer[0][1:], radius=0, enter_editmode=True)
 
                     layer = context.active_object
                     layer.name = "Layer: " + str(count)
@@ -111,30 +105,20 @@ class ImportGcode(bpy.types.Operator, ImportHelper):
                     ops.curve.select_random()
                     ops.curve.delete(type="VERT")
                     ops.curve.select_random()
-                    layer.data.splines[index].bezier_points[
-                        0
-                    ].handle_left_type = "VECTOR"
-                    layer.data.splines[index].bezier_points[
-                        0
-                    ].handle_right_type = "VECTOR"
+                    layer.data.splines[index].bezier_points[0].handle_left_type = "VECTOR"
+                    layer.data.splines[index].bezier_points[0].handle_right_type = "VECTOR"
 
                     for v in tqdm(_layer[1:]):
                         ops.curve.vertex_add(location=v[1:])
                         if v[0] == 0:
                             ops.curve.select_all(action="DESELECT")
-                            layer.data.splines[index].bezier_points[
-                                -1
-                            ].select_control_point = True
+                            layer.data.splines[index].bezier_points[-1].select_control_point = True
                             # FIXME: Throws the error:
                             #  IndexError: bpy_prop_collection[-2]: out of range.
-                            layer.data.splines[index].bezier_points[
-                                -2
-                            ].select_control_point = True
+                            layer.data.splines[index].bezier_points[-2].select_control_point = True
                             ops.curve.delete(type="SEGMENT")
                             ops.curve.select_all(action="DESELECT")
-                            layer.data.splines[-1].bezier_points[
-                                -1
-                            ].select_control_point = True
+                            layer.data.splines[-1].bezier_points[-1].select_control_point = True
                             index += 1
 
                     ops.object.editmode_toggle()

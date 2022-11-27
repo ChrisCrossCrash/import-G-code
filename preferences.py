@@ -12,10 +12,7 @@ class IGcodePreferences(bpy.types.AddonPreferences):
         Pip._ensure_user_site_package()
 
         layout = self.layout
-        flag = (
-            importlib.util.find_spec("regex") is not None
-            and importlib.util.find_spec("tqdm") is not None
-        )
+        flag = importlib.util.find_spec("regex") is not None and importlib.util.find_spec("tqdm") is not None
         if flag:
             layout.label(text="Regex and Tqdm loaded.", icon="INFO")
         else:
